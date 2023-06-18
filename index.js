@@ -49,13 +49,13 @@ function playGame() {
 function playerTurn(e) {
 	let cell = e.target
 	let currentPlayer = isPlayerO ? playerO : playerX
-	placeMark(cell, currentPlayer)
-	if (checkWin(currentPlayer)) {
-		endGame(false)
-	} else if (isDraw()) {
-		endGame(true)
+	showXO(cell, currentPlayer)
+	if (isWin(currentPlayer)) {
+		gameEnd(false)
+	} else if (isTie()) {
+		gameEnd(true)
 	} else {
-		swapTurns()
+		togglePlayer()
 		setBoardHoverClass()
 	}
 }
@@ -65,6 +65,38 @@ function gameEnd (draw) {
     resultMessage.innerHTML = 'It is a tie!'
   } else {
     resultMessage.innerHTML = `${isPlayerO ? 'Xs win!' : 'Os win!'}`
-  }
+  } 
   gameResult.classList.add('show')
+}
+
+function isTie() {
+	return [...cellNumbers].every(cell => {
+		return cell.classList.contains(playerX) || cell.classList.contains(playerO)
+	})
+}
+
+function showXO(cell, currentPlayer) {
+	cell.classList.add(currentPlayer)
+}
+
+function togglePlayer() {
+	isPlayerO = !isPlayerO
+}
+
+function setBoardHoverClass() {
+	gameBoard.classList.remove(playerX)
+	gameBoard.classList.remove(playerO)
+	if (isPlayerO) {
+		gameBoard.classList.add(playerO)
+	} else {
+		gameBoard.classList.add(playerX)
+	}
+}
+
+function isWin(currentPlayer) {
+	return winningCombos.some(combo => {
+		return combo.every(index => {
+			return cellNumbers[index].classList.contains(currentPlayer)
+		})
+	})
 }
