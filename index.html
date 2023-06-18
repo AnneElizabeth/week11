@@ -3,26 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>replit</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Week 11 Coding Assignment - TicTacToe</title>
+    <link href="styles.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
    <section>
-        <h1 class="game--title">Tic Tac Toe</h1>
-        <div class="game--container" onclick="displayValue(event)">
-            <div data-index="0" class="cell">X</div>
-            <div data-index="1" class="cell">X</div>
-            <div data-index="2" class="cell">X</div>
-            <div data-index="3" class="cell">X</div>
-            <div data-index="4" class="cell">O</div>
-            <div data-index="5" class="cell">O</div>
-            <div data-index="6" class="cell">O</div>
-            <div data-index="7" class="cell">O</div>
-            <div data-index="8" class="cell">O</div>
+        <h1 class="ttt-title">Tic Tac Toe</h1>
+        <div class="ttt-container" onclick="displayValue(event)">
+            <div data-index="0" class="xo-cell">X</div>
+            <div data-index="1" class="xo-cell">X</div>
+            <div data-index="2" class="xo-cell">X</div>
+            <div data-index="3" class="xo-cell">X</div>
+            <div data-index="4" class="xo-cell">O</div>
+            <div data-index="5" class="xo-cell">O</div>
+            <div data-index="6" class="xo-cell">O</div>
+            <div data-index="7" class="xo-cell">O</div>
+            <div data-index="8" class="xo-cell">O</div>
         </div>
-        <h2 class="game--status">Player 1 Wins!</h2>
-        <button class="game--restart">Restart Game</button>
+        <h2 class="ttt-winner">Player 1 Wins!</h2>
+        <button class="ttt-reload">Restart Game</button>
     </section>
 </body>
-  <script defer src="script.js"></script>
+  <script defer src="index.js"></script>
 </html>
