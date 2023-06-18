@@ -1,0 +1,18 @@
+.ttt-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 300px;
+    margin:  auto; /* centering grid */
+}
+
+.xo-cell {
+    display: flex;
+    align-items: center; /* vertical center - (cross axis) */
+    justify-content: center; /* horizontal center - (main axis) */
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 0 0 1px #333333;
+    border: 1px solid #333333;
+    cursor: pointer;
+    font-size: 60px;
+}
