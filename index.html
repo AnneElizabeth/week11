@@ -6,23 +6,25 @@
     <title>Week 11 Coding Assignment - TicTacToe</title>
     <link href="styles.css" rel="stylesheet" type="text/css" />
   </head>
-  <body>
-   <section>
-        <h1 class="ttt-title">Tic Tac Toe</h1>
-        <div class="ttt-container" onclick="displayValue(event)">
-            <div data-index="0" class="xo-cell">X</div>
-            <div data-index="1" class="xo-cell">X</div>
-            <div data-index="2" class="xo-cell">X</div>
-            <div data-index="3" class="xo-cell">X</div>
-            <div data-index="4" class="xo-cell">O</div>
-            <div data-index="5" class="xo-cell">O</div>
-            <div data-index="6" class="xo-cell">O</div>
-            <div data-index="7" class="xo-cell">O</div>
-            <div data-index="8" class="xo-cell">O</div>
-        </div>
-        <h2 class="ttt-winner">Player 1 Wins!</h2>
-        <button class="ttt-reload">Restart Game</button>
-    </section>
-</body>
+    <body>
+      <h1>Tic Tac Toe</h1>
+      <p>Begin the game by clicking on a box.</p>
+      <p>First player is Xs. Second player is Os.</p>
+      <div id="ttt-container" onclick="displayValue(event)">
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+        <div data-cell class="xo-cell"></div>
+      </div>
+      <div id="ttt-result">
+        <div id="resultText"></div>
+        <button id="gameRestartBtn">Restart Game</button>
+      </div>
+  </body>
   <script defer src="index.js"></script>
 </html>

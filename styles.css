@@ -1,4 +1,4 @@
-.ttt-container {
+#ttt-container {
     display: grid;
     grid-template-columns: repeat(3, auto);
     width: 300px;
@@ -17,14 +17,22 @@
     font-size: 60px;
 }
 
-.ttt-title {
+h1 {
 
 }
 
-.ttt-winner {
+.xo-cell {
 
 }
 
-.ttt-reload {
+#ttt-result {
+
+}
+
+#resultText {
+
+}
+
+#gameReload {
     
 }
