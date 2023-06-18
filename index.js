@@ -22,33 +22,33 @@ let winningCombos = [
 	[2, 4, 6]
 ]
 
-let cellNumbers = document.querySelectorAll('[data-cell]')
-let gameBoard = document.querySelector('#ttt-container')
-let gameResult = document.querySelector('#ttt-result')
-let gameRestartBtn = document.querySelector('#gameRestartBtn')
-let resultMessage = document.querySelector('resultText')
-let isPlayerO = false
+let cellValues = document.querySelectorAll('[data-cell]')
+let gameBoard = document.getElementById('ttt-board')
+let gameResult = document.getElementById('ttt-result')
+let playAgainBtn = document.getElementById('playAgainBtn')
+let resultMessage = document.getElementById('resultText')
+let isPlayerOTurn = false
 
-playGame()
+// playGame()
 
-gameRestartBtn.addEventListener('click', playGame)
+playAgainBtn.addEventListener('click', playGame)
 
 function playGame() {
-	isPlayerO = false
-	cellNumbers.forEach(cell => {
+	isPlayerOTurn = false
+	cellValues.forEach(cell => {
 		cell.classList.remove(playerX)
 		cell.classList.remove(playerO)
 		cell.removeEventListener('click', playerTurn)
 		cell.addEventListener('click', playerTurn, { once: true })
 	})
-	
+ 
   setBoardHoverClass()
-	resultMessage.classList.remove('show')
+	gameResult.classList.remove('show')
 }
 
 function playerTurn(e) {
 	let cell = e.target
-	let currentPlayer = isPlayerO ? playerO : playerX
+	let currentPlayer = isPlayerOTurn ? playerO : playerX
 	showXO(cell, currentPlayer)
 	if (isWin(currentPlayer)) {
 		gameEnd(false)
@@ -62,15 +62,15 @@ function playerTurn(e) {
 
 function gameEnd (draw) {
   if (draw) {
-    resultMessage.innerHTML = 'It is a tie!'
+    resultMessage.innerText = 'It is a tie!'
   } else {
-    resultMessage.innerHTML = `${isPlayerO ? 'Xs win!' : 'Os win!'}`
+    resultMessage.innerText = `${isPlayerOTurn ? 'Os' : 'Xs'} win!`
   } 
   gameResult.classList.add('show')
 }
 
 function isTie() {
-	return [...cellNumbers].every(cell => {
+	return [...cellValues].every(cell => {
 		return cell.classList.contains(playerX) || cell.classList.contains(playerO)
 	})
 }
@@ -80,13 +80,13 @@ function showXO(cell, currentPlayer) {
 }
 
 function togglePlayer() {
-	isPlayerO = !isPlayerO
+	isPlayerOTurn = !isPlayerOTurn
 }
 
 function setBoardHoverClass() {
 	gameBoard.classList.remove(playerX)
 	gameBoard.classList.remove(playerO)
-	if (isPlayerO) {
+	if (isPlayerOTurn) {
 		gameBoard.classList.add(playerO)
 	} else {
 		gameBoard.classList.add(playerX)
@@ -96,7 +96,7 @@ function setBoardHoverClass() {
 function isWin(currentPlayer) {
 	return winningCombos.some(combo => {
 		return combo.every(index => {
-			return cellNumbers[index].classList.contains(currentPlayer)
+			return cellValues[index].classList.contains(currentPlayer)
 		})
 	})
 }

@@ -1,38 +1,126 @@
-#ttt-container {
+:root {
+
+	--color: #81c3fd; /* for hover */
+	--color-set: #0275d8; /* when set */
+	--l: 10px; /* X line-width */
+}
+
+h1 {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 2rem;
+}
+
+p {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.5rem;
+}
+
+
+#ttt-board, .ttt-board {
     display: grid;
     grid-template-columns: repeat(3, auto);
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
     width: 300px;
     margin:  auto; /* centering grid */
 }
 
 .xo-cell {
     display: flex;
-    align-items: center; /* vertical center - (cross axis) */
-    justify-content: center; /* horizontal center - (main axis) */
     width: 100px;
     height: 100px;
-    box-shadow: 0 0 0 1px #333333;
-    border: 1px solid #333333;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333333;
     cursor: pointer;
-    font-size: 60px;
+    color: black;
 }
 
-h1 {
-
+/* remove border for edges */
+.xo-cell:nth-child(1), .xo-cell:nth-child(2), .xo-cell:nth-child(3) {
+	border-top: none !important;
 }
 
-.xo-cell {
-
+.xo-cell:nth-child(1), .xo-cell:nth-child(4), .xo-cell:nth-child(7) {
+	border-left: none;
 }
 
-#ttt-result {
-
+.xo-cell:nth-child(3), .xo-cell:nth-child(6), .xo-cell:nth-child(9) {
+	border-right: none;
 }
 
-#resultText {
-
+.xo-cell:nth-child(7), .xo-cell:nth-child(8), .xo-cell:nth-child(9) {
+	border-bottom: none;
 }
 
-#gameReload {
-    
+.xo-cell.x, .xo-cell.o {
+    cursor: not-allowed;
+}
+
+/* for cross */
+.board.x .cell:not(.o):not(.x):hover {
+	background: linear-gradient(to top right, transparent calc(50% - var(--l) / 2), var(--color) calc(50% - var(--l) / 2) calc(50% + var(--l) / 2), transparent calc(50% + var(--l) / 2)),
+				linear-gradient(to bottom right, transparent calc(50% - var(--l) / 2), var(--color) calc(50% - var(--l) / 2) calc(50% + var(--l) / 2), transparent calc(50% + var(--l) / 2));
+	background-size: 80% 80%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* for cross (set) */
+.cell:not(.o).x {
+	background: linear-gradient(to top right, transparent calc(50% - var(--l) / 2), var(--color-set) calc(50% - var(--l) / 2) calc(50% + var(--l) / 2), transparent calc(50% + var(--l) / 2)),
+				linear-gradient(to bottom right, transparent calc(50% - var(--l) / 2), var(--color-set) calc(50% - var(--l) / 2) calc(50% + var(--l) / 2), transparent calc(50% + var(--l) / 2));
+	background-size: 80% 80%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* for o */
+.board.o .cell:not(.o):not(.x):hover {	
+	background: radial-gradient(var(--color) 60%, transparent 60%);
+}
+
+/* for o (set) */
+.cell:not(.x).o {
+	background: radial-gradient(var(--color-set) 60%, transparent 60%);
+}
+
+
+
+#ttt-result, .ttt-result {
+    display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--color-set);
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 5rem;
+	font-family: 'Courier New', Courier, monospace;
+	flex-direction: column;
+}
+
+#playAgain button {
+	border-radius: 10px;
+	font-size: 3rem;
+	background-color: white;
+	border: 1px solid var(--color-set);
+	padding: .25em .5em;
+	cursor: pointer;
+}
+
+#playAgain button:hover {
+	background-color: var(--color-set);
+	color: white;
+	border-color: white;
+}
+
+.ttt-result.show {
+	display: flex;
 }
