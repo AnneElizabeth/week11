@@ -7,58 +7,18 @@
 // Create variables for storing values that need to be tracked during the game
 
 // shortcut for tracking game
-let gameStatus = document.querySelector('.ttt-board')
+let statusDisplay = document.querySelector('.game--status')
 
 // used to stop game if game-ending conditions are met
 let gameInPlay = true
 
 // used to track who's turn it is
-
-let currentPlayer = 'x'
+let currentPlayer = 'X'
 
 // used to track results of played cells
+let gameState = ["", "", "", "", "", "", "", "", ""]
 
-let playedCells = ["", "", "", "", "", "", "", "", ""]
-
-// functions for dynamic player messages
-let declareWinner = () =>
-  `Player ${currentPlayer} wins!`
-let declareTie = () =>
-  `Game ends in a tie!`
-let whoseTurn = `It's ${currentPlayer}'s turn`
-gameStatus.innerHTML = whoseTurn()
-
-function handleCellPlayed() {
-
-}
-
-function handlePlayerChange() {
-
-}
-
-function handleResultValidation() {
-
-}
-
-function handleCellClick() {
-
-}
-
-function handleRestartGame() {
-
-}
-
-// adding event listeners to cells and restart button
-
-document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
-
-document.querySelector('.game--restart').addEventListener('click', handleRestartGame);
-
-
-
-
-let playerX = 'x'
-let playerO = 'o'
+//used to supply winning requirements
 let winningCombos = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -70,74 +30,98 @@ let winningCombos = [
 	[2, 4, 6]
 ]
 
-// playGame()
+// functions for displaying dynamic player messages
+let declareWinner = () =>
+  `Player ${currentPlayer} wins!`
+let declareTie = () =>
+  `Game ends in a tie!`
+let whoseTurn = () =>`It's ${currentPlayer}'s turn`
 
-playAgainBtn.addEventListener('click', playGame)
+statusDisplay.innerHTML = whoseTurn()
 
-function playGame() {
-	isPlayerOTurn = false
-	cellValues.forEach(cell => {
-		cell.classList.remove(playerX)
-		cell.classList.remove(playerO)
-		cell.removeEventListener('click', playerTurn)
-		cell.addEventListener('click', playerTurn)
-	})
- 
-  setBoardHoverClass()
-	gameResult.classList.remove('show')
+// update game status and display it
+function handleCellPlayed(clickedCell, clickedCellIndex) {
+	gameState[clickedCellIndex] = currentPlayer;
+    clickedCell.innerHTML = currentPlayer;
 }
 
-function playerTurn(e) {
-	let cell = e.target
-	let currentPlayer = isPlayerOTurn ? playerO : playerX
-	showXO(cell, currentPlayer)
-	if (isWin(currentPlayer)) {
-		gameEnd(false)
-	} else if (isTie()) {
-		gameEnd(true)
-	} else {
-		togglePlayer()
-		setBoardHoverClass()
-	}
+//switch players and update screen
+function handlePlayerChange() {
+	currentPlayer = currentPlayer === "X" ? "O" : "X";
+    statusDisplay.innerHTML = whoseTurn();
 }
 
-function gameEnd (tie) {
-  if (tie) {
-    resultText.innerText = 'It is a tie!'
-  } else {
-    resultText.innerText = `${isPlayerOTurn ? 'Os' : 'Xs'} win!`
-  } 
-  gameResult.classList.add('show')
+function handleResultValidation() {
+	//check if current player has won
+	let roundWon = false;
+    
+	// check if values in gameStatus array (plays that have taken place) match any winningCombos
+	for (let i = 0; i <= 7; i++) {
+        let winCondition = winningCombos[i];
+        let a = gameState[winCondition[0]];
+        let b = gameState[winCondition[1]];
+        let c = gameState[winCondition[2]];
+        if (a === '' || b === '' || c === '') {
+            continue;
+        }
+        if (a === b && b === c) {
+            roundWon = true;
+            break
+        }
+    }
+	if (roundWon) {
+        statusDisplay.innerHTML = declareWinner();
+        gameInPlay = false;
+        return;
+    }
+
+	//checks for a tie
+	let roundTie = !gameState.includes("");
+    if (roundTie) {
+        statusDisplay.innerHTML = declareTie();
+        gameInPlay = false;
+        return;
+    }
+
+	// no one has won yet, switch players
+	handlePlayerChange()
 }
 
-function isTie() {
-	return [...cellValues].every(cell => {
-		return cell.classList.contains(playerX) || cell.classList.contains(playerO)
-	})
+//Check if cell has already been clicked
+function handleCellClick(clickedCellEvent) {
+	let clickedCell = clickedCellEvent.target
+
+	//grab data-cell-index value to id cell and make it a number because getAttribute returns a string
+
+	let clickedCellIndex = parseInt(
+		clickedCell.getAttribute('data-cell-index')
+	  );
+
+	//ignore click if there's already a value in the cell or game is not being played
+	if (gameState[clickedCellIndex] !== "" || !gameInPlay) {
+        return;
+    }
+
+	//proceed with game if cell is empty 
+	handleCellPlayed(clickedCell, clickedCellIndex);
+    handleResultValidation();
 }
 
-function showXO(cell, currentPlayer) {
-	cell.classList.add(currentPlayer)
+//Reset when game is over
+function handleRestartGame() {
+	gameinPlay = true;
+    currentPlayer = "X";
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    statusDisplay.innerHTML = whoseTurn();
+    document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "")
 }
 
-function togglePlayer() {
-	isPlayerOTurn = !isPlayerOTurn
-}
+// adding event listeners to cells and restart button
 
-function setBoardHoverClass() {
-	gameBoard.classList.remove(playerX)
-	gameBoard.classList.remove(playerO)
-	if (isPlayerOTurn = true) {
-		gameBoard.classList.add(playerO)
-	} else {
-		gameBoard.classList.add(playerX)
-	}
-}
+document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
 
-function isWin(currentPlayer) {
-	return winningCombos.some(combo => {
-		return combo.every(index => {
-			return cellValues[index].classList.contains(currentPlayer)
-		})
-	})
-}
+document.querySelector('.game--restart').addEventListener('click', handleRestartGame);
+
+
+
+
