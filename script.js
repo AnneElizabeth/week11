@@ -4,10 +4,58 @@
  - A button should be available to clear the grid and restart the game.
 - When a player has won, or the board is full and the game results in a draw, a Bootstrap alert or similar Bootstrap component should appear across the screen announcing the winner. */
 
-/* function displayValue(e) {
-    alert(`value: ${e.target.textContent}`)
-    alert(`position: ${e.target.getAttribute("data-index")}`);
-  } */
+// Create variables for storing values that need to be tracked during the game
+
+// shortcut for tracking game
+let gameStatus = document.querySelector('.ttt-board')
+
+// used to stop game if game-ending conditions are met
+let gameInPlay = true
+
+// used to track who's turn it is
+
+let currentPlayer = 'x'
+
+// used to track results of played cells
+
+let playedCells = ["", "", "", "", "", "", "", "", ""]
+
+// functions for dynamic player messages
+let declareWinner = () =>
+  `Player ${currentPlayer} wins!`
+let declareTie = () =>
+  `Game ends in a tie!`
+let whoseTurn = `It's ${currentPlayer}'s turn`
+gameStatus.innerHTML = whoseTurn()
+
+function handleCellPlayed() {
+
+}
+
+function handlePlayerChange() {
+
+}
+
+function handleResultValidation() {
+
+}
+
+function handleCellClick() {
+
+}
+
+function handleRestartGame() {
+
+}
+
+// adding event listeners to cells and restart button
+
+document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
+
+document.querySelector('.game--restart').addEventListener('click', handleRestartGame);
+
+
+
 
 let playerX = 'x'
 let playerO = 'o'
@@ -22,13 +70,6 @@ let winningCombos = [
 	[2, 4, 6]
 ]
 
-let cellValues = document.querySelectorAll('[data-cell]')
-let gameBoard = document.getElementById('ttt-board')
-let gameResult = document.getElementById('ttt-result')
-let playAgainBtn = document.getElementById('playAgainBtn')
-let resultMessage = document.getElementById('resultText')
-let isPlayerOTurn = false
-
 // playGame()
 
 playAgainBtn.addEventListener('click', playGame)
@@ -39,7 +80,7 @@ function playGame() {
 		cell.classList.remove(playerX)
 		cell.classList.remove(playerO)
 		cell.removeEventListener('click', playerTurn)
-		cell.addEventListener('click', playerTurn, { once: true })
+		cell.addEventListener('click', playerTurn)
 	})
  
   setBoardHoverClass()
@@ -60,11 +101,11 @@ function playerTurn(e) {
 	}
 }
 
-function gameEnd (draw) {
-  if (draw) {
-    resultMessage.innerText = 'It is a tie!'
+function gameEnd (tie) {
+  if (tie) {
+    resultText.innerText = 'It is a tie!'
   } else {
-    resultMessage.innerText = `${isPlayerOTurn ? 'Os' : 'Xs'} win!`
+    resultText.innerText = `${isPlayerOTurn ? 'Os' : 'Xs'} win!`
   } 
   gameResult.classList.add('show')
 }
@@ -86,7 +127,7 @@ function togglePlayer() {
 function setBoardHoverClass() {
 	gameBoard.classList.remove(playerX)
 	gameBoard.classList.remove(playerO)
-	if (isPlayerOTurn) {
+	if (isPlayerOTurn = true) {
 		gameBoard.classList.add(playerO)
 	} else {
 		gameBoard.classList.add(playerX)
