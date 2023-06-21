@@ -4,21 +4,21 @@
  - A button should be available to clear the grid and restart the game.
 - When a player has won, or the board is full and the game results in a draw, a Bootstrap alert or similar Bootstrap component should appear across the screen announcing the winner. */
 
-// Create variables for storing values that need to be tracked during the game
+// Variables for storing values that need to be tracked during the game
 
-// shortcut for tracking game
+// Shortcut variable for tracking game status
 let statusDisplay = document.querySelector('.game--status')
 
-// used to stop game if game-ending conditions are met
+// Used to stop game if game-ending conditions are met
 let gameInPlay = true
 
-// used to track who's turn it is
+// Used to track whose turn it is
 let currentPlayer = 'X'
 
-// used to track results of played cells
+// Used to track results of played cells
 let gameState = ["", "", "", "", "", "", "", "", ""]
 
-//used to supply winning requirements
+// Used to supply winning requirements
 let winningCombos = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -30,7 +30,7 @@ let winningCombos = [
 	[2, 4, 6]
 ]
 
-// functions for displaying dynamic player messages
+// Functions for displaying dynamic player messages
 let declareWinner = () =>
   `Player ${currentPlayer} wins!`
 let declareTie = () =>
@@ -39,13 +39,13 @@ let whoseTurn = () =>`It's ${currentPlayer}'s turn`
 
 statusDisplay.innerHTML = whoseTurn()
 
-// update game status and display it
+// Update game status and screen
 function handleCellPlayed(clickedCell, clickedCellIndex) {
 	gameState[clickedCellIndex] = currentPlayer;
     clickedCell.innerHTML = currentPlayer;
 }
 
-//switch players and update screen
+// Switch players and update screen
 function handlePlayerChange() {
 	currentPlayer = currentPlayer === "X" ? "O" : "X";
     statusDisplay.innerHTML = whoseTurn();
@@ -69,13 +69,15 @@ function handleResultValidation() {
             break
         }
     }
+
+	// Check for winner
 	if (roundWon) {
         statusDisplay.innerHTML = declareWinner();
         gameInPlay = false;
         return;
     }
 
-	//checks for a tie
+	// Check for a tie
 	let roundTie = !gameState.includes("");
     if (roundTie) {
         statusDisplay.innerHTML = declareTie();
@@ -83,40 +85,40 @@ function handleResultValidation() {
         return;
     }
 
-	// no one has won yet, switch players
+	// If no one has won yet, switch players
 	handlePlayerChange()
 }
 
-//Check if cell has already been clicked
+// Check if cell has already been clicked
 function handleCellClick(clickedCellEvent) {
 	let clickedCell = clickedCellEvent.target
 
-	//grab data-cell-index value to id cell and make it a number because getAttribute returns a string
+	// Grab data-cell-index value to id cell and make it a number because getAttribute returns a string
 
 	let clickedCellIndex = parseInt(
 		clickedCell.getAttribute('data-cell-index')
 	  );
 
-	//ignore click if there's already a value in the cell or game is not being played
+	// Ignore click if there's already a value in the cell or game is not being played
 	if (gameState[clickedCellIndex] !== "" || !gameInPlay) {
         return;
     }
 
-	//proceed with game if cell is empty 
+	// Proceed with game if cell is empty 
 	handleCellPlayed(clickedCell, clickedCellIndex);
     handleResultValidation();
 }
 
-//Reset when game is over
+// Reset board display when game is over
 function handleRestartGame() {
-	gameinPlay = true;
+	gameInPlay = true;
     currentPlayer = "X";
     gameState = ["", "", "", "", "", "", "", "", ""];
     statusDisplay.innerHTML = whoseTurn();
     document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "")
 }
 
-// adding event listeners to cells and restart button
+// Add event listeners to cells and restart button
 
 document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
 
