@@ -18,7 +18,7 @@ p {
     font-size: 1.5rem;
 }
 
-.game--container {
+.board {
     display: grid;
     grid-template-columns: repeat(3, auto);
     width: 306px;

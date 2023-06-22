@@ -1,13 +1,7 @@
-/* Create a Tic-Tac-Toe game grid using your HTML element of choice. 
- - When a cell in the grid is clicked, an X or O should appear in that spot depending on whose turn it is.
- - A heading should say whether it is X’s or O’s turn and change with each move made.
- - A button should be available to clear the grid and restart the game.
-- When a player has won, or the board is full and the game results in a draw, a Bootstrap alert or similar Bootstrap component should appear across the screen announcing the winner. */
-
 // Variables for storing values that need to be tracked during the game
 
 // Shortcut variable for tracking game status
-let statusDisplay = document.querySelector('.game--status')
+let gameUpdates = document.querySelector('.gameStatus')
 
 // Used to stop game if game-ending conditions are met
 let gameInPlay = true
@@ -16,7 +10,7 @@ let gameInPlay = true
 let currentPlayer = 'X'
 
 // Used to track results of played cells
-let gameState = ["", "", "", "", "", "", "", "", ""]
+let playerMoves = ["", "", "", "", "", "", "", "", ""]
 
 // Used to supply winning requirements
 let winningCombos = [
@@ -37,92 +31,92 @@ let declareTie = () =>
   `Game ends in a tie!`
 let whoseTurn = () =>`It's ${currentPlayer}'s turn`
 
-statusDisplay.innerHTML = whoseTurn()
+gameUpdates.innerHTML = whoseTurn()
 
 // Update game status and screen
-function handleCellPlayed(clickedCell, clickedCellIndex) {
-	gameState[clickedCellIndex] = currentPlayer;
+function trackCellClicks(clickedCell, cellIndexClicked) {
+	playerMoves[cellIndexClicked] = currentPlayer;
     clickedCell.innerHTML = currentPlayer;
 }
 
 // Switch players and update screen
-function handlePlayerChange() {
+function changePlayers() {
 	currentPlayer = currentPlayer === "X" ? "O" : "X";
-    statusDisplay.innerHTML = whoseTurn();
+    gameUpdates.innerHTML = whoseTurn();
 }
 
-function handleResultValidation() {
-	//check if current player has won
-	let roundWon = false;
+function checkResults() {
+	// Check if current player has won
+	let winningRound = false;
     
-	// check if values in gameStatus array (plays that have taken place) match any winningCombos
+	// Check if values in gameStatus array (plays that have taken place) match any values in winningCombos array
 	for (let i = 0; i <= 7; i++) {
-        let winCondition = winningCombos[i];
-        let a = gameState[winCondition[0]];
-        let b = gameState[winCondition[1]];
-        let c = gameState[winCondition[2]];
+        let isGameWinner = winningCombos[i];
+        let a = playerMoves[isGameWinner[0]];
+        let b = playerMoves[isGameWinner[1]];
+        let c = playerMoves[isGameWinner[2]];
         if (a === '' || b === '' || c === '') {
             continue;
         }
         if (a === b && b === c) {
-            roundWon = true;
+            winningRound = true;
             break
         }
     }
 
 	// Check for winner
-	if (roundWon) {
-        statusDisplay.innerHTML = declareWinner();
+	if (winningRound) {
+        gameUpdates.innerHTML = declareWinner();
         gameInPlay = false;
         return;
     }
 
 	// Check for a tie
-	let roundTie = !gameState.includes("");
-    if (roundTie) {
-        statusDisplay.innerHTML = declareTie();
+	let tiedRound = !playerMoves.includes("");
+    if (tiedRound) {
+        gameUpdates.innerHTML = declareTie();
         gameInPlay = false;
         return;
     }
 
 	// If no one has won yet, switch players
-	handlePlayerChange()
+	changePlayers()
 }
 
 // Check if cell has already been clicked
-function handleCellClick(clickedCellEvent) {
-	let clickedCell = clickedCellEvent.target
+function cellClickCheck(cellClickEvent) {
+	let clickedCell = cellClickEvent.target
 
 	// Grab data-cell-index value to id cell and make it a number because getAttribute returns a string
 
-	let clickedCellIndex = parseInt(
+	let cellIndexClicked = parseInt(
 		clickedCell.getAttribute('data-cell-index')
 	  );
 
 	// Ignore click if there's already a value in the cell or game is not being played
-	if (gameState[clickedCellIndex] !== "" || !gameInPlay) {
+	if (playerMoves[cellIndexClicked] !== "" || !gameInPlay) {
         return;
     }
 
 	// Proceed with game if cell is empty 
-	handleCellPlayed(clickedCell, clickedCellIndex);
-    handleResultValidation();
+	trackCellClicks(clickedCell, cellIndexClicked);
+    checkResults();
 }
 
 // Reset board display when game is over
-function handleRestartGame() {
+function newGame() {
 	gameInPlay = true;
     currentPlayer = "X";
-    gameState = ["", "", "", "", "", "", "", "", ""];
-    statusDisplay.innerHTML = whoseTurn();
+    playerMoves = ["", "", "", "", "", "", "", "", ""];
+    gameUpdates.innerHTML = whoseTurn();
     document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "")
 }
 
 // Add event listeners to cells and restart button
 
-document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
+document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', cellClickCheck));
 
-document.querySelector('.game--restart').addEventListener('click', handleRestartGame);
+document.querySelector('.newGame').addEventListener('click', newGame);
 
 
 
